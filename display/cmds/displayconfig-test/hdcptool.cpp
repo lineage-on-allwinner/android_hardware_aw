@@ -1,11 +1,11 @@
 
 #include <stdio.h>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
-#include <vendor/display/config/1.0/types.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/types.h>
 
-using ::vendor::display::config::V1_0::IDisplayConfig;
-using ::vendor::display::config::V1_0::HdcpAuthorizedStatus;
-using ::vendor::display::config::V1_0::HdcpLevel;
+using ::vendor::aw::display::config::V1_0::IDisplayConfig;
+using ::vendor::aw::display::config::V1_0::HdcpAuthorizedStatus;
+using ::vendor::aw::display::config::V1_0::HdcpLevel;
 using android::hardware::hidl_string;
 using android::hardware::hidl_vec;
 
@@ -69,11 +69,11 @@ int main(int argc, char** argv) {
     if (inputopt.dump) {
         HdcpAuthorizedStatus status = mDisplayConfig->getAuthorizedStatus();
         printf("hdcp authorized status: %s\n",
-                ::vendor::display::config::V1_0::toString(status).c_str());
+                ::vendor::aw::display::config::V1_0::toString(status).c_str());
 
         HdcpLevel level = mDisplayConfig->getConnectedHdcpLevel();
         printf("hdcp level: %s\n",
-                ::vendor::display::config::V1_0::toString(level).c_str());
+                ::vendor::aw::display::config::V1_0::toString(level).c_str());
     }
     return 0;
 }

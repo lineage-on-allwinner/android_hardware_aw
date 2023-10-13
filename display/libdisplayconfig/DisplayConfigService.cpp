@@ -27,7 +27,7 @@
 
 namespace sunxi {
 
-using ::vendor::display::config::V1_0::implementation::DisplayConfig;
+using ::vendor::aw::display::config::V1_0::implementation::DisplayConfig;
 
 DisplayConfigImpl* createDisplayConfigImplByPlatform(IHWCPrivateService& client)
 {

@@ -21,7 +21,7 @@
 #include <vector>
 
 #include <utils/RefBase.h>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
 
 namespace sunxi {
 
@@ -65,8 +65,8 @@ public:
     virtual int setEnhanceComponent(int display, int item, int value);
 
     virtual bool supportedSNRSetting(int display);
-    virtual int getSNRInfo(int display, ::vendor::display::config::V1_0::SNRInfo& info);
-    virtual int setSNRInfo(int display, const ::vendor::display::config::V1_0::SNRInfo& info);
+    virtual int getSNRInfo(int display, ::vendor::aw::display::config::V1_0::SNRInfo& info);
+    virtual int setSNRInfo(int display, const ::vendor::aw::display::config::V1_0::SNRInfo& info);
 
     virtual int configHdcp(bool enable);
     virtual int getConnectedHdcpLevel() const;

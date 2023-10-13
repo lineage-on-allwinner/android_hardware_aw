@@ -1,12 +1,12 @@
 
 #include <stdio.h>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
 
 #include "modes.h"
 
-using ::vendor::display::config::V1_0::IDisplayConfig;
-using ::vendor::display::config::V1_0::LayerMode;
-using ::vendor::display::config::V1_0::Dataspace;
+using ::vendor::aw::display::config::V1_0::IDisplayConfig;
+using ::vendor::aw::display::config::V1_0::LayerMode;
+using ::vendor::aw::display::config::V1_0::Dataspace;
 using android::hardware::hidl_string;
 using android::hardware::hidl_vec;
 

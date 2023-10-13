@@ -18,14 +18,14 @@
 #define SUNXI_SNR_MANAGER_H
 
 #include <map>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
 
 namespace sunxi {
 
 class IHWCPrivateService;
 
-using ::vendor::display::config::V1_0::SNRInfo;
-using ::vendor::display::config::V1_0::SNRFeatureMode;
+using ::vendor::aw::display::config::V1_0::SNRInfo;
+using ::vendor::aw::display::config::V1_0::SNRFeatureMode;
 
 class SNRManager {
 public:

@@ -1,2 +1,2 @@
-d8234d2e71b0337db9c2180f9122560aeb44c942923b5be2ed0d2f77add4b380 vendor.display.config@1.0::types
-7dc38a71029b5d3cac2cfb1995799d7cfcd54c07b5890b3950f31be7465fc99d vendor.display.config@1.0::IDisplayConfig
+7d5c2bb8aa3ac5fa466bc29fe513cd1a8f6c3704b75e80e98b87d3cfa2d09421 vendor.aw.display.config@1.0::types
+7e82748364b6f4f5c53b4852ce40792831066b57a782dfbebace5ee109a2f78c vendor.aw.display.config@1.0::IDisplayConfig

@@ -37,7 +37,7 @@ cc_defaults {
         "libbinder",
         "libhidlbase",
         "libhidltransport",
-        "vendor.display.config@1.0",
+        "vendor.aw.display.config@1.0",
     ],
 }
 

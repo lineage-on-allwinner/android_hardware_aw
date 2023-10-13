@@ -3,6 +3,7 @@
 #include "DisplayConfig.h"
 
 namespace vendor {
+namespace aw {
 namespace display {
 namespace config {
 namespace V1_0 {
@@ -13,14 +14,14 @@ namespace implementation {
 #define DEBUG(x, ...) \
     ALOGD("%s: " x, __PRETTY_FUNCTION__, ##__VA_ARGS__)
 
-using ::vendor::display::config::V1_0::DisplayPortType;
-using ::vendor::display::config::V1_0::LayerMode;
-using ::vendor::display::config::V1_0::PixelFormat;
-using ::vendor::display::config::V1_0::Dataspace;
-using ::vendor::display::config::V1_0::AspectRatio;
-using ::vendor::display::config::V1_0::ScreenMargin;
-using ::vendor::display::config::V1_0::EnhanceItem;
-using ::vendor::display::config::V1_0::SNRInfo;
+using ::vendor::aw::display::config::V1_0::DisplayPortType;
+using ::vendor::aw::display::config::V1_0::LayerMode;
+using ::vendor::aw::display::config::V1_0::PixelFormat;
+using ::vendor::aw::display::config::V1_0::Dataspace;
+using ::vendor::aw::display::config::V1_0::AspectRatio;
+using ::vendor::aw::display::config::V1_0::ScreenMargin;
+using ::vendor::aw::display::config::V1_0::EnhanceItem;
+using ::vendor::aw::display::config::V1_0::SNRInfo;
 
 Return<int32_t> DisplayConfig::setDisplayArgs(int32_t display,
         int32_t cmd1, int32_t cmd2, int32_t data)
@@ -215,7 +216,7 @@ Return<void> DisplayConfig::getSNRInfo(int32_t display, getSNRInfo_cb _hidl_cb) 
     return Void();
 }
 
-Return<int32_t> DisplayConfig::setSNRInfo(int32_t display, const ::vendor::display::config::V1_0::SNRInfo& snr) {
+Return<int32_t> DisplayConfig::setSNRInfo(int32_t display, const ::vendor::aw::display::config::V1_0::SNRInfo& snr) {
     return mConfigImpl->setSNRInfo(display, snr);
 }
 
@@ -224,14 +225,14 @@ Return<int32_t> DisplayConfig::configHdcp(bool enable)
     return mConfigImpl->configHdcp(enable);
 }
 
-Return<::vendor::display::config::V1_0::HdcpLevel> DisplayConfig::getConnectedHdcpLevel() {
+Return<::vendor::aw::display::config::V1_0::HdcpLevel> DisplayConfig::getConnectedHdcpLevel() {
     int32_t level = mConfigImpl->getConnectedHdcpLevel();
-    return static_cast<::vendor::display::config::V1_0::HdcpLevel>(level);
+    return static_cast<::vendor::aw::display::config::V1_0::HdcpLevel>(level);
 }
 
-Return<::vendor::display::config::V1_0::HdcpAuthorizedStatus> DisplayConfig::getAuthorizedStatus() {
+Return<::vendor::aw::display::config::V1_0::HdcpAuthorizedStatus> DisplayConfig::getAuthorizedStatus() {
     int32_t status = mConfigImpl->getAuthorizedStatus();
-    return static_cast<::vendor::display::config::V1_0::HdcpAuthorizedStatus>(status);
+    return static_cast<::vendor::aw::display::config::V1_0::HdcpAuthorizedStatus>(status);
 }
 
 Return<void> DisplayConfig::dumpDebugInfo(dumpDebugInfo_cb _hidl_cb)
@@ -257,4 +258,5 @@ Return<int32_t> DisplayConfig::getHdmiUserSetting(int32_t display)
 }  // namespace V1_0
 }  // namespace config
 }  // namespace display
+}  // namespace aw
 }  // namespace vendor

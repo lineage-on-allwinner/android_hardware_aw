@@ -107,14 +107,14 @@ public:
         return mSNRManager->platformSupportSNR(display);
     }
     int getSNRInfo(int display,
-            ::vendor::display::config::V1_0::SNRInfo& info) override {
+            ::vendor::aw::display::config::V1_0::SNRInfo& info) override {
         if (mSNRManager != nullptr) {
             return mSNRManager->getSNRInfo(display, info);
         }
         return -ENODEV;
     }
     int setSNRInfo(int display,
-            const ::vendor::display::config::V1_0::SNRInfo& info) override {
+            const ::vendor::aw::display::config::V1_0::SNRInfo& info) override {
         if (mSNRManager != nullptr) {
             return mSNRManager->setSNRInfo(display, info);
         }

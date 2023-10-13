@@ -1,6 +1,6 @@
 
 #include <vector>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
 
 #include "modes.h"
 #include "hardware/sunxi_display2.h"
@@ -79,7 +79,7 @@ const char* layerModeName(int id) {
     }
 }
 
-using ::vendor::display::config::V1_0::Dataspace;
+using ::vendor::aw::display::config::V1_0::Dataspace;
 const char* dataspaceName(Dataspace id) {
     switch (id) {
         case Dataspace::DATASPACE_MODE_AUTO:  return "AUTO";
@@ -91,7 +91,7 @@ const char* dataspaceName(Dataspace id) {
     }
 }
 
-using ::vendor::display::config::V1_0::PixelFormat;
+using ::vendor::aw::display::config::V1_0::PixelFormat;
 const char* pixelformtName(PixelFormat id) {
     switch (id) {
         case PixelFormat::PIXEL_FORMAT_AUTO: return "AUTO";

@@ -47,7 +47,7 @@ cc_library_shared {
         "libbinder",
         "libhidlbase",
         "libhidltransport",
-        "vendor.display.config@1.0",
-        "vendor.display.config@1.0-impl",
+        "vendor.aw.display.config@1.0",
+        "vendor.aw.display.config@1.0-impl",
     ],
 }

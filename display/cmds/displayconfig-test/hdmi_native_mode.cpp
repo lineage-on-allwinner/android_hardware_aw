@@ -16,12 +16,12 @@
  */
 #include <stdio.h>
 #include <iostream>
-#include <vendor/display/config/1.0/IDisplayConfig.h>
-#include <vendor/display/config/1.0/types.h>
+#include <vendor/aw/display/config/1.0/IDisplayConfig.h>
+#include <vendor/aw/display/config/1.0/types.h>
 
-using ::vendor::display::config::V1_0::IDisplayConfig;
-using ::vendor::display::config::V1_0::SNRInfo;
-using ::vendor::display::config::V1_0::SNRFeatureMode;
+using ::vendor::aw::display::config::V1_0::IDisplayConfig;
+using ::vendor::aw::display::config::V1_0::SNRInfo;
+using ::vendor::aw::display::config::V1_0::SNRFeatureMode;
 using android::hardware::hidl_string;
 using android::hardware::hidl_vec;
 

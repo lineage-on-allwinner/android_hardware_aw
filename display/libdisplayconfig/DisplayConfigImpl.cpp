@@ -169,14 +169,14 @@ bool DisplayConfigImpl::supportedSNRSetting(int display)
     return false;
 }
 
-int DisplayConfigImpl::getSNRInfo(int display, ::vendor::display::config::V1_0::SNRInfo& info)
+int DisplayConfigImpl::getSNRInfo(int display, ::vendor::aw::display::config::V1_0::SNRInfo& info)
 {
     UNUSED(display);
     UNUSED(info);
     return 0;
 }
 
-int DisplayConfigImpl::setSNRInfo(int display, const ::vendor::display::config::V1_0::SNRInfo& info)
+int DisplayConfigImpl::setSNRInfo(int display, const ::vendor::aw::display::config::V1_0::SNRInfo& info)
 {
     UNUSED(display);
     UNUSED(info);
