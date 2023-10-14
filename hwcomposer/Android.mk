@@ -135,7 +135,7 @@ LOCAL_C_INCLUDES += $(TARGET_HARDWARE_INCLUDE)
 LOCAL_C_INCLUDES += system/core/libion/include \
     system/core/include \
     hardware/libhardware/include \
-    hardware/aw/hwc2/include
+    hardware/aw/hwcomposer/include
 
 LOCAL_CFLAGS += -Wno-error=unused-variable -Wno-error=unused-function -Wno-error=unused-label -Wno-error=unused-value -Wno-error=unused-parameter -Wno-error=incompatible-pointer-types -Wno-error=implicit-function-declaration -Wno-error=format -Wno-error=return-type
 LOCAL_CFLAGS += -DLOG_TAG=\"sunxihwc\" -DTARGET_BOARD_PLATFORM=$(TARGET_BOARD_PLATFORM)
