@@ -39,12 +39,6 @@
 #include <thread>
 
 #include "cutils/properties.h"
-#ifndef BUILD_TARGET_RECOVERY
-#include <binder/IPCThreadState.h>
-#include <binder/ProcessState.h>
-#include <binder/IServiceManager.h>
-#include "MultiirService.h"
-#endif
 #include "virtual_input.h"
 #include "multiir.h"
 
@@ -495,9 +489,9 @@ int sunxi_timer_init(struct itimerval *value, int repeat_num)
     if(repeat_num == 0)
     {
         value->it_value.tv_sec = 0;
-        value->it_value.tv_usec = IR_KEYPRESS_TIMEOUT; //200ms¶¨Ê±
+        value->it_value.tv_usec = IR_KEYPRESS_TIMEOUT; //200msï¿½ï¿½Ê±
         value->it_interval.tv_sec = 0;
-        value->it_interval.tv_usec = IR_KEYPRESS_TIMEOUT; //200ms¶¨Ê±
+        value->it_interval.tv_usec = IR_KEYPRESS_TIMEOUT; //200msï¿½ï¿½Ê±
     }else if(repeat_num > 0) {  // Support to decrease the period of repeating time
         value->it_value.tv_sec = 0;
         value->it_value.tv_usec = pointer_speed * 1000;
@@ -616,17 +610,6 @@ static int  ir_protocol(unsigned int *ir_protocol_used )
     close(fd);
     return 0;
 }
-#ifndef BUILD_TARGET_RECOVERY
-std::thread mServiceThread;
-void startService(void)
-{
-    android::sp<android::ProcessState> proc(android::ProcessState::self());
-    android::sp<android::IServiceManager> sm = android::defaultServiceManager();
-    android::MultiirService::instantiate();
-    android::ProcessState::self()->startThreadPool();
-    android::IPCThreadState::self()->joinThreadPool();
-}
-#endif
 
 int main(void)
 {
@@ -648,7 +631,7 @@ int main(void)
             default to use NEC protocol\n");
         ir_protocol_used = NEC;
     }
-    //ÐéÄâÉè±¸½¨Á¢
+    //ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½ï¿½ï¿½
     uinputfd = setup_virtual_input_dev(uinput_devname);
     ALOGD("uinputfd=%d\n", uinputfd);
     if(uinputfd <= 0)
@@ -699,10 +682,6 @@ int main(void)
         ALOGD("find target device, path=%s", devpath);
         sourcedev = open_device(devpath, ufds);
     }
-
-#ifndef BUILD_TARGET_RECOVERY
-    mServiceThread = std::thread(startService);
-#endif
 
     while(1) {
         poll(ufds, nfds, -1);
