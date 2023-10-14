@@ -379,7 +379,7 @@ int AndroidKeymaster4Device_AW::InvokeTaCommand(int commandID, const ::keymaster
 
 int AndroidKeymaster4Device_AW::InvokeTaCommand(int commandID,
                                                 ::keymaster::KeymasterResponse* rsp) {
-    AddEntropyRequest dummyrequest;
+    AddEntropyRequest dummyrequest(::keymaster::kDefaultMessageVersion);
     return InvokeTaCommand(commandID, dummyrequest, rsp);
 }
 
@@ -410,10 +410,10 @@ int AndroidKeymaster4Device_AW::SetUpTa() {
     }
 
     /*set os version as well*/
-    ConfigureRequest req;
+    ConfigureRequest req(::keymaster::kDefaultMessageVersion);
     req.os_version = ::keymaster::GetOsVersion();
     req.os_patchlevel = ::keymaster::GetOsPatchlevel();
-    ConfigureResponse rsp;
+    ConfigureResponse rsp(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_V2_CONFIGURE, req, &rsp);
     if (rsp.error != KM_ERROR_OK) {
         ALOGE("keymaster set up failed");
@@ -435,7 +435,7 @@ Return<void> AndroidKeymaster4Device_AW::getHardwareInfo(getHardwareInfo_cb _hid
 
 Return<void>
 AndroidKeymaster4Device_AW::getHmacSharingParameters(getHmacSharingParameters_cb _hidl_cb) {
-    GetHmacSharingParametersResponse response;
+    GetHmacSharingParametersResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_GET_HMAC_SHARING_PARAMETERS, &response);
 
     ::android::hardware::keymaster::V4_0::HmacSharingParameters params;
@@ -450,7 +450,7 @@ AndroidKeymaster4Device_AW::getHmacSharingParameters(getHmacSharingParameters_cb
 Return<void> AndroidKeymaster4Device_AW::computeSharedHmac(
     const hidl_vec<::android::hardware::keymaster::V4_0::HmacSharingParameters>& params,
     computeSharedHmac_cb _hidl_cb) {
-    ComputeSharedHmacRequest request;
+    ComputeSharedHmacRequest request(::keymaster::kDefaultMessageVersion);
     request.params_array.params_array = new ::keymaster::HmacSharingParameters[params.size()];
     request.params_array.num_params = params.size();
     for (size_t i = 0; i < params.size(); ++i) {
@@ -462,7 +462,7 @@ Return<void> AndroidKeymaster4Device_AW::computeSharedHmac(
                params[i].nonce.size());
     }
 
-    ComputeSharedHmacResponse response;
+    ComputeSharedHmacResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_COMPUTE_SHARED_HMAC, request, &response);
     hidl_vec<uint8_t> sharing_check;
     if (response.error == KM_ERROR_OK) sharing_check = kmBlob2hidlVec(response.sharing_check);
@@ -476,7 +476,7 @@ Return<void> AndroidKeymaster4Device_AW::verifyAuthorization(
     const ::android::hardware::keymaster::V4_0::HardwareAuthToken& authToken,
     verifyAuthorization_cb _hidl_cb) {
 
-    VerifyAuthorizationRequest request;
+    VerifyAuthorizationRequest request(::keymaster::kDefaultMessageVersion);
     request.challenge = challenge;
     request.parameters_to_verify.Reinitialize(KmParamSet(parametersToVerify));
     request.auth_token.challenge = authToken.challenge;
@@ -487,7 +487,7 @@ Return<void> AndroidKeymaster4Device_AW::verifyAuthorization(
     KeymasterBlob mac(authToken.mac.data(), authToken.mac.size());
     request.auth_token.mac = mac;
 
-    VerifyAuthorizationResponse response;
+    VerifyAuthorizationResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_VERIFY_AUTHORIZATION, request, &response);
 
     ::android::hardware::keymaster::V4_0::VerificationToken token;
@@ -504,10 +504,10 @@ Return<void> AndroidKeymaster4Device_AW::verifyAuthorization(
 
 Return<ErrorCode> AndroidKeymaster4Device_AW::addRngEntropy(const hidl_vec<uint8_t>& data) {
     if (data.size() == 0) return ErrorCode::OK;
-    AddEntropyRequest request;
+    AddEntropyRequest request(::keymaster::kDefaultMessageVersion);
     request.random_data.Reinitialize(data.data(), data.size());
 
-    AddEntropyResponse response;
+    AddEntropyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_ADD_RNG_ENTROPY, request, &response);
 
     return legacy_enum_conversion(response.error);
@@ -515,10 +515,10 @@ Return<ErrorCode> AndroidKeymaster4Device_AW::addRngEntropy(const hidl_vec<uint8
 
 Return<void> AndroidKeymaster4Device_AW::generateKey(const hidl_vec<KeyParameter>& keyParams,
                                                      generateKey_cb _hidl_cb) {
-    GenerateKeyRequest request;
+    GenerateKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.key_description.Reinitialize(KmParamSet(keyParams));
 
-    GenerateKeyResponse response;
+    GenerateKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_GENERATE_KEY, request, &response);
 
     KeyCharacteristics resultCharacteristics;
@@ -536,11 +536,11 @@ Return<void> AndroidKeymaster4Device_AW::getKeyCharacteristics(const hidl_vec<ui
                                                                const hidl_vec<uint8_t>& clientId,
                                                                const hidl_vec<uint8_t>& appData,
                                                                getKeyCharacteristics_cb _hidl_cb) {
-    GetKeyCharacteristicsRequest request;
+    GetKeyCharacteristicsRequest request(::keymaster::kDefaultMessageVersion);
     request.SetKeyMaterial(keyBlob.data(), keyBlob.size());
     addClientAndAppData(clientId, appData, &request.additional_params);
 
-    GetKeyCharacteristicsResponse response;
+    GetKeyCharacteristicsResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_GET_KEY_CHARACTERISTICS, request, &response);
 
     KeyCharacteristics resultCharacteristics;
@@ -556,12 +556,12 @@ Return<void> AndroidKeymaster4Device_AW::importKey(const hidl_vec<KeyParameter>&
                                                    KeyFormat keyFormat,
                                                    const hidl_vec<uint8_t>& keyData,
                                                    importKey_cb _hidl_cb) {
-    ImportKeyRequest request;
+    ImportKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.key_description.Reinitialize(KmParamSet(params));
     request.key_format = legacy_enum_conversion(keyFormat);
     request.SetKeyMaterial(keyData.data(), keyData.size());
 
-    ImportKeyResponse response;
+    ImportKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_IMPORT_KEY, request, &response);
 
     KeyCharacteristics resultCharacteristics;
@@ -580,7 +580,7 @@ Return<void> AndroidKeymaster4Device_AW::importWrappedKey(
     const hidl_vec<uint8_t>& maskingKey, const hidl_vec<KeyParameter>& unwrappingParams,
     uint64_t passwordSid, uint64_t biometricSid, importWrappedKey_cb _hidl_cb) {
 
-    ImportWrappedKeyRequest request;
+    ImportWrappedKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.SetWrappedMaterial(wrappedKeyData.data(), wrappedKeyData.size());
     request.SetWrappingMaterial(wrappingKeyBlob.data(), wrappingKeyBlob.size());
     request.SetMaskingKeyMaterial(maskingKey.data(), maskingKey.size());
@@ -588,7 +588,7 @@ Return<void> AndroidKeymaster4Device_AW::importWrappedKey(
     request.password_sid = passwordSid;
     request.biometric_sid = biometricSid;
 
-    ImportWrappedKeyResponse response;
+    ImportWrappedKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_IMPORT_WRAPPED_KEY, request, &response);
 
     KeyCharacteristics resultCharacteristics;
@@ -607,12 +607,12 @@ Return<void> AndroidKeymaster4Device_AW::exportKey(KeyFormat exportFormat,
                                                    const hidl_vec<uint8_t>& clientId,
                                                    const hidl_vec<uint8_t>& appData,
                                                    exportKey_cb _hidl_cb) {
-    ExportKeyRequest request;
+    ExportKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.key_format = legacy_enum_conversion(exportFormat);
     request.SetKeyMaterial(keyBlob.data(), keyBlob.size());
     addClientAndAppData(clientId, appData, &request.additional_params);
 
-    ExportKeyResponse response;
+    ExportKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_EXPORT_KEY, request, &response);
 
     hidl_vec<uint8_t> resultKeyBlob;
@@ -626,11 +626,11 @@ Return<void> AndroidKeymaster4Device_AW::exportKey(KeyFormat exportFormat,
 Return<void> AndroidKeymaster4Device_AW::attestKey(const hidl_vec<uint8_t>& keyToAttest,
                                                    const hidl_vec<KeyParameter>& attestParams,
                                                    attestKey_cb _hidl_cb) {
-    AttestKeyRequest request;
+    AttestKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.SetKeyMaterial(keyToAttest.data(), keyToAttest.size());
     request.attest_params.Reinitialize(KmParamSet(attestParams));
 
-    AttestKeyResponse response;
+    AttestKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_ATTEST_KEY, request, &response);
 
     hidl_vec<hidl_vec<uint8_t>> resultCertChain;
@@ -646,11 +646,11 @@ Return<void> AndroidKeymaster4Device_AW::upgradeKey(const hidl_vec<uint8_t>& key
                                                     upgradeKey_cb _hidl_cb) {
     // There's nothing to be done to upgrade software key blobs.  Further, the software
     // implementation never returns ErrorCode::KEY_REQUIRES_UPGRADE, so this should never be called.
-    UpgradeKeyRequest request;
+    UpgradeKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.SetKeyMaterial(keyBlobToUpgrade.data(), keyBlobToUpgrade.size());
     request.upgrade_params.Reinitialize(KmParamSet(upgradeParams));
 
-    UpgradeKeyResponse response;
+    UpgradeKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_UPGRADE_KEY, request, &response);
 
     if (response.error == KM_ERROR_OK) {
@@ -663,10 +663,10 @@ Return<void> AndroidKeymaster4Device_AW::upgradeKey(const hidl_vec<uint8_t>& key
 
 Return<ErrorCode> AndroidKeymaster4Device_AW::deleteKey(const hidl_vec<uint8_t>& keyBlob) {
     // There's nothing to be done to delete software key blobs.
-    DeleteKeyRequest request;
+    DeleteKeyRequest request(::keymaster::kDefaultMessageVersion);
     request.SetKeyMaterial(keyBlob.data(), keyBlob.size());
 
-    DeleteKeyResponse response;
+    DeleteKeyResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_DELETE_KEY, request, &response);
 
     return legacy_enum_conversion(response.error);
@@ -674,8 +674,8 @@ Return<ErrorCode> AndroidKeymaster4Device_AW::deleteKey(const hidl_vec<uint8_t>&
 
 Return<ErrorCode> AndroidKeymaster4Device_AW::deleteAllKeys() {
     // There's nothing to be done to delete software key blobs.
-    DeleteAllKeysRequest request;
-    DeleteAllKeysResponse response;
+    DeleteAllKeysRequest request(::keymaster::kDefaultMessageVersion);
+    DeleteAllKeysResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_DELETE_ALL_KEYS, request, &response);
 
     return legacy_enum_conversion(response.error);
@@ -690,13 +690,13 @@ Return<void> AndroidKeymaster4Device_AW::begin(KeyPurpose purpose, const hidl_ve
                                                const HardwareAuthToken& authToken,
                                                begin_cb _hidl_cb) {
 
-    BeginOperationRequest request;
+    BeginOperationRequest request(::keymaster::kDefaultMessageVersion);
     request.purpose = legacy_enum_conversion(purpose);
     request.SetKeyMaterial(key.data(), key.size());
     request.additional_params.Reinitialize(KmParamSet(inParams));
     request.additional_params.push_back(genAuthTokenParam(authToken));
 
-    BeginOperationResponse response;
+    BeginOperationResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_BEGIN, request, &response);
 
     hidl_vec<KeyParameter> resultParams;
@@ -714,13 +714,13 @@ Return<void> AndroidKeymaster4Device_AW::update(uint64_t operationHandle,
                                                 const HardwareAuthToken& authToken,
                                                 const VerificationToken& /* verificationToken */,
                                                 update_cb _hidl_cb) {
-    UpdateOperationRequest request;
+    UpdateOperationRequest request(::keymaster::kDefaultMessageVersion);
     request.op_handle = operationHandle;
     request.input.Reinitialize(input.data(), input.size());
     request.additional_params.Reinitialize(KmParamSet(inParams));
     request.additional_params.push_back(genAuthTokenParam(authToken));
 
-    UpdateOperationResponse response;
+    UpdateOperationResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_UPDATE, request, &response);
 
     uint32_t resultConsumed = 0;
@@ -742,14 +742,14 @@ Return<void> AndroidKeymaster4Device_AW::finish(uint64_t operationHandle,
                                                 const HardwareAuthToken& authToken,
                                                 const VerificationToken& /* verificationToken */,
                                                 finish_cb _hidl_cb) {
-    FinishOperationRequest request;
+    FinishOperationRequest request(::keymaster::kDefaultMessageVersion);
     request.op_handle = operationHandle;
     request.input.Reinitialize(input.data(), input.size());
     request.signature.Reinitialize(signature.data(), signature.size());
     request.additional_params.Reinitialize(KmParamSet(inParams));
     request.additional_params.push_back(genAuthTokenParam(authToken));
 
-    FinishOperationResponse response;
+    FinishOperationResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_FINISH, request, &response);
 
     hidl_vec<KeyParameter> resultParams;
@@ -763,10 +763,10 @@ Return<void> AndroidKeymaster4Device_AW::finish(uint64_t operationHandle,
 }
 
 Return<ErrorCode> AndroidKeymaster4Device_AW::abort(uint64_t operationHandle) {
-    AbortOperationRequest request;
+    AbortOperationRequest request(::keymaster::kDefaultMessageVersion);
     request.op_handle = operationHandle;
 
-    AbortOperationResponse response;
+    AbortOperationResponse response(::keymaster::kDefaultMessageVersion);
     InvokeTaCommand(MSG_KEYMASTER_ABORT, request, &response);
 
     return legacy_enum_conversion(response.error);
