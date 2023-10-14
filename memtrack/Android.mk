@@ -22,11 +22,9 @@ LOCAL_MODULE_RELATIVE_PATH := hw
 LOCAL_PROPRIETARY_MODULE := true
 LOCAL_C_INCLUDES += \
         hardware/libhardware/include \
-        system/core/libutils/include \
-        system/core/libcutils/include_vndk \
         system/core/libsystem/include
 LOCAL_CFLAGS += -Wno-error=unused-parameter
-LOCAL_SHARED_LIBRARIES := liblog
+LOCAL_SHARED_LIBRARIES := liblog libutils libcutils
 LOCAL_SRC_FILES := memtrack.c memtrack_impl.c
 LOCAL_MODULE := memtrack.$(TARGET_BOARD_PLATFORM)
 include $(BUILD_SHARED_LIBRARY)
