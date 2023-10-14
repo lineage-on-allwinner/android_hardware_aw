@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#define ATRACE_TAG ATRACE_TAG_GRAPHICS
+#include <utils/Trace.h>
+
 #include "../hwc.h"
 #include <hardware/hardware.h>
 #include <hardware/hwcomposer2.h>
@@ -32,7 +36,6 @@
 #include <pthread.h>
 #include <hardware/graphics-sunxi.h>
 #include <sys/resource.h>
-#include <utils/Trace.h>
 #include <cutils/properties.h>
 #include <math.h>
 

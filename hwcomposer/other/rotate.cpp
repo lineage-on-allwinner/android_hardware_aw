@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#define ATRACE_TAG ATRACE_TAG_GRAPHICS
 #include <utils/Trace.h>
+
 #include <cutils/log.h>
 #include <stdio.h>
 #include <stdlib.h>
