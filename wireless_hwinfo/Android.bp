@@ -28,7 +28,6 @@ cc_binary {
     whole_static_libs: ["libhwinfo"],
     include_dirs: ["system/core/libutils/include"],
 
-    relative_install_path: "hw",
     proprietary: true,
     init_rc: ["hwinfo.rc"],
     required: ["hwinfo.conf"],

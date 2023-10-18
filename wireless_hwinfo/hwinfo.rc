@@ -1,4 +1,4 @@
-service wl_info /vendor/bin/hw/wireless_hwinfo
+service wl_info /vendor/bin/wireless_hwinfo
     class early_hal
     user root
     group system

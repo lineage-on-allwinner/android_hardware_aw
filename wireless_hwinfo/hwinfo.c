@@ -1,24 +1,44 @@
-#define LOG_TAG "HWINFO"
-
 #include <stdio.h>
-#include <utils/Log.h>
+#include <string.h>
 #include "libhwinfo.h"
 
-int main(void)
+const char* get_wireless_info_value(const char *arg) {
+    const char *info = NULL;
+    
+    if (strcmp(arg, "vendor") == 0) {
+        info = get_wifi_vendor_name();
+    } else if (strcmp(arg, "module") == 0) {
+        info = get_wifi_module_name();
+    } else if (strcmp(arg, "driver") == 0) {
+        info = get_wifi_driver_name();
+    } else if (strcmp(arg, "driver_module") == 0) {
+        info = get_wifi_driver_module_name();
+    } else if (strcmp(arg, "driver_module_args") == 0) {
+        info = get_driver_module_arg();
+    } else if (strcmp(arg, "wifi_lib_name") == 0) {
+        info = get_wifi_hal_name();
+    } else if (strcmp(arg, "bluetooth_lib_name") == 0) {
+        info = get_bluetooth_libbt_name();
+    } else if (strcmp(arg, "bluetooth_supported") == 0) {
+        info = get_bluetooth_is_support() ? "1" : "0";
+    }
+
+    return info;
+}
+
+int main(int argc, char *argv[])
 {
-	const char *vendor  = get_wifi_vendor_name();
-	const char *module  = get_wifi_module_name();
-	const char *wifihal = get_wifi_hal_name();
-	const char *libbt   = get_bluetooth_libbt_name();
-	int bt_support      = get_bluetooth_is_support();
+    const char *info = NULL;
 
-	ALOGD("********** Wireless information **********");
-	ALOGD("module vendor: %s", vendor);
-	ALOGD("module name  : %s", module);
-	ALOGD("wifi hal name: %s", wifihal);
-	ALOGD("libbt-vendor : %s", libbt);
-	ALOGD("is bt support: %d", bt_support);
-	ALOGD("******************************************");
+    if (argc == 2) {
+        info = get_wireless_info_value(argv[1]);
+    } else {
+        info = get_wifi_module_name();
+    }
 
-	return 0;
+    if (!info)
+        return 1;
+
+    printf("%s\n", info);
+    return 0;
 }
