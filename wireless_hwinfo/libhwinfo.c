@@ -38,6 +38,7 @@
 #define MODULE_WLAN_VENDOR_PROP "persist.vendor.overlay.wlan_vendor"
 #define MODULE_BT_VENDOR_PROP   "persist.vendor.overlay.bluetooth_vendor"
 #define MODULE_BT_SUPPORT_PROP  "persist.vendor.overlay.bluetooth_support"
+#define HWINFO_DONE_PROP        "vendor.wireless_hwinfo.detection_finished"
 
 #define LINE_MAX                1024
 #define INFO_SESSION_MAX        10
@@ -776,6 +777,8 @@ done:
             property_set(MODULE_BT_VENDOR_PROP,   wifiinfo->bt_support ? wifiinfo->vendor_name : "NULL");
             property_set(MODULE_BT_SUPPORT_PROP,  wifiinfo->bt_support ? "1" : "0");
         }
+        
+        property_set(HWINFO_DONE_PROP, "1");
     }
     return wifiinfo;
 }
